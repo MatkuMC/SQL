@@ -20,3 +20,4 @@ AND PO.Position = 'Attacker'
 GROUP BY P.PlayerID
 HAVING Total > 400
 ORDER BY PercentageSP DESC
+LIMIT 0, 10
