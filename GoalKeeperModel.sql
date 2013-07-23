@@ -36,3 +36,27 @@ AND P.PlayerID =$values[0]
 )
 AND T.TeamID =$values[1]
 GROUP BY T.TeamID
+
+SELECT T.TeamID, T.TeamName, SUM( IB.ShotsOn ) AS TotalShotsOnIB, SUM( OB.ShotsOn ) AS TotalShotsOnOB
+FROM Matches AS M
+INNER JOIN Teams AS T ON ( T.TeamID = M.TeamID1
+OR T.TeamID = M.TeamID2 )
+INNER JOIN PlayerMatches AS PM ON PM.MatchID = M.MatchID
+INNER JOIN Players AS P ON P.PlayerID = PM.PlayerID
+AND P.TeamID != T.TeamID
+INNER JOIN InsideBox AS IB ON IB.ID = PM.ID
+INNER JOIN OutsideBox AS OB ON OB.ID = PM.ID
+GROUP BY T.TeamID
+ORDER BY T.TeamName ASC
+
+SELECT T.TeamID, T.TeamName, SUM( IB.Goals ) AS TotalConcededIB, SUM( OB.Goals ) AS TotalConcededOB
+FROM Matches AS M
+INNER JOIN Teams AS T ON ( T.TeamID = M.TeamID1
+OR T.TeamID = M.TeamID2 )
+INNER JOIN PlayerMatches AS PM ON PM.MatchID = M.MatchID
+INNER JOIN Players AS P ON P.PlayerID = PM.PlayerID
+AND P.TeamID != T.TeamID
+INNER JOIN InsideBox AS IB ON IB.ID = PM.ID
+INNER JOIN OutsideBox AS OB ON OB.ID = PM.ID
+GROUP BY T.TeamID
+ORDER BY T.TeamName ASC
